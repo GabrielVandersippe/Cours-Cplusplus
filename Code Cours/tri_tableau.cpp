@@ -8,8 +8,8 @@ int main() {
     cout << "Tableau avant tri :" << endl;
 
     for (int i = 0; i < 5; i++) {
-        cout << tab[i] << endl;
-    }
+         cout << tab[i] << endl ;
+    } 
 
     for (int i = 0; i < 5; i++) {
         int mini = tab[i];
@@ -32,4 +32,25 @@ int main() {
     for (int i = 0; i < 5; i++) {
         cout << tab[i] << endl;
     }
+
+    struct Date {
+        int day;
+        int month;
+        int year;
+
+        void InitDate(int d, int m, int y) {
+            (*this).day = d;
+            (*this).month = m;
+            (*this).year = y;
+        }
+
+        void AfficheDate() {
+            cout << "Date : " << (*this).day << "/" << (*this).month << "/" << (*this).year << endl;
+        }
+    };
+
+    Date x;
+    x.InitDate(7, 11, 2024);
+    x.AfficheDate();
+
 }
