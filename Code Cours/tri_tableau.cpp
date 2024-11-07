@@ -34,10 +34,12 @@ int main() {
     }
 
     struct Date {
+    private:
         int day;
         int month;
         int year;
-
+    
+    public:
         void InitDate(int d, int m, int y) {
             (*this).day = d;
             (*this).month = m;
@@ -47,10 +49,20 @@ int main() {
         void AfficheDate() {
             cout << "Date : " << (*this).day << "/" << (*this).month << "/" << (*this).year << endl;
         }
+
+        void SetDay(int d) {
+            if ((0 <= d) && (d <= 30)) {
+                this->day = d;
+            }
+            else { cout << "Erreur" << endl; }
+        }
     };
 
     Date x;
     x.InitDate(7, 11, 2024);
     x.AfficheDate();
 
+    x.SetDay(500);
+    x.SetDay(8);
+    x.AfficheDate();
 }
