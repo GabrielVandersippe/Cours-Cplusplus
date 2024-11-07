@@ -1,7 +1,58 @@
 #include <iostream>
 using namespace std;
 
+struct IntStack20 {
+
+    int stack [20];
+    int indice_courant = -1;
+
+    void Init() {
+        for (int i = 0; i < 20; i++) {
+            stack[i] = 0;
+        }
+    }
+
+    void push(int x) {
+        if (indice_courant >= 19) {
+            cout << "Erreur : Stack Pleine" << endl;
+        }
+        else {
+            indice_courant += 1;
+            stack[indice_courant] = x;
+        }
+    }
+
+    void pop() {
+        if (indice_courant <= -1) {
+            cout << "Erreur : Stack Vide" << endl;
+        }
+        else {
+            indice_courant -= 1;
+            cout << "Popped :" << stack[indice_courant] << endl;
+        }
+    }
+
+    void empty() {
+        cout << ((indice_courant == -1) ? "true" : "false") << endl;
+    }
+
+    void print() {
+        cout << "[ ";
+        for (int i = 0; i <= indice_courant; i++) {
+            cout << stack[i] << " ";
+        } cout << "]" << endl;
+    }
+
+};
+   
+
+
+
+
+
+
 int main() {
+
     cout << "Mon algorithme :" << endl;
     int tab[] = { 5, 8, 15, 6, 0 };
 
@@ -65,4 +116,12 @@ int main() {
     x.SetDay(500);
     x.SetDay(8);
     x.AfficheDate();
+
+    IntStack20 s;
+    s.Init();
+    s.push(5);
+    s.push(50);
+    s.push(65);
+    s.pop();
+    s.print();
 }
