@@ -50,17 +50,29 @@ struct Case {
     Case* precedent = 0;
 };
 
-struct IntStackInfinie {
+struct IntStackVariable {
     
     Case* head; 
+    int longueur_max;
+    int capacite;
 
-    IntStackInfinie() : head(NULL) {}; /*Je sais pas comment ça marche mais c'est ce que j'ai vu en ligne*/
-    
+    void Init(int n = NULL) {
+        head = NULL;
+        longueur_max = n; /*si longueur_max = NULL, on a une stack infinie*/
+        capacite = 0;
+    }
+
     void push(int i) {
-        Case* suivant = new Case();
-        (*suivant).elt = i;
-        (*suivant).precedent = head;
-        head = suivant;
+        if (!longueur_max || (longueur_max>capacite)) {
+            Case* suivant = new Case();
+            (*suivant).elt = i;
+            (*suivant).precedent = head;
+            head = suivant;
+            capacite += 1;
+        }
+        else {
+            cout << "Stack Remplie !" << endl;
+        }
     }
 
     void pop(int i = 1) {
@@ -70,6 +82,7 @@ struct IntStackInfinie {
                 Case* temp = (*head).precedent;
                 delete head;
                 head = temp;
+                capacite -= 1;
             }
             else {
                 is_empty();
@@ -91,7 +104,7 @@ struct IntStackInfinie {
         cout << "Origine" << endl;
     }
 
-    void ajout_debut(int i) {
+    /*void ajout_debut(int i) {
         Case* nouvelle = new Case();
         (*nouvelle).elt = i;
         (*nouvelle).precedent = NULL;
@@ -106,7 +119,7 @@ struct IntStackInfinie {
             }
             temp->precedent = nouvelle;
         }
-    }
+    } */
 
     void revert() {
         Case* temp1 = NULL;
@@ -189,13 +202,15 @@ int main() {
 
 
 
-    IntStackInfinie s;
+    IntStackVariable s;
+
+    s.Init();
+
     for (int i = 0; i < 50; i++) {
         s.push(i);
     }
     s.print();
     s.pop(5);
-    s.ajout_debut(10);
     s.revert();
     s.print();
 }
