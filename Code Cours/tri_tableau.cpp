@@ -3,7 +3,7 @@ using namespace std;
 
 struct IntStack20 {
 
-    int stack [20];
+    int stack[20];
     int indice_courant = -1;
 
     void Init() {
@@ -44,12 +44,82 @@ struct IntStack20 {
     }
 
 };
-   
+ 
+struct Case {
+    int elt = 0;
+    Case* precedent = 0;
+};
 
+struct IntStackInfinie {
+    
+    Case* head; 
 
+    IntStackInfinie() : head(NULL) {}; /*Je sais pas comment ça marche mais c'est ce que j'ai vu en ligne*/
+    
+    void push(int i) {
+        Case* suivant = new Case();
+        (*suivant).elt = i;
+        (*suivant).precedent = head;
+        head = suivant;
+    }
 
+    void pop(int i = 1) {
+        for (int j = 0; j < i; j++) {
+            if (head != NULL) {
+                cout << "Popped : " << (*head).elt << endl;
+                Case* temp = (*head).precedent;
+                delete head;
+                head = temp;
+            }
+            else {
+                is_empty();
+                break;
+            }
+        }
+    }
 
+    void is_empty() {
+        cout << ((head == NULL) ? "Stack is empty" : "Stack is not empty") << endl;
+    }
 
+    void print() {
+        Case* temp = head; /*on note où est la fin de la pile*/
+        while (temp != NULL) {
+            cout << temp->elt << "->";
+            temp = temp->precedent;
+        }
+        cout << "Origine" << endl;
+    }
+
+    void ajout_debut(int i) {
+        Case* nouvelle = new Case();
+        (*nouvelle).elt = i;
+        (*nouvelle).precedent = NULL;
+
+        if (head == NULL) {
+            head = nouvelle;
+        }
+        else {
+            Case* temp = head;
+            while (temp->precedent) {
+                temp = temp->precedent;
+            }
+            temp->precedent = nouvelle;
+        }
+    }
+
+    void revert() {
+        Case* temp1 = NULL;
+        Case* temp2 = head;
+        while (temp2) {
+            temp2 = temp2->precedent;
+            head->precedent = temp1;
+            temp1 = head;
+            head = temp2;
+        }
+        head = temp1;
+    }
+};
 
 int main() {
 
@@ -117,11 +187,15 @@ int main() {
     x.SetDay(8);
     x.AfficheDate();
 
-    IntStack20 s;
-    s.Init();
-    s.push(5);
-    s.push(50);
-    s.push(65);
-    s.pop();
+
+
+    IntStackInfinie s;
+    for (int i = 0; i < 50; i++) {
+        s.push(i);
+    }
+    s.print();
+    s.pop(5);
+    s.ajout_debut(10);
+    s.revert();
     s.print();
 }
