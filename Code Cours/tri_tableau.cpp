@@ -100,6 +100,9 @@ struct IntStackVariable {
     }
 
     void print() {
+        cout << "  " << endl;
+        cout << "------------------------------***------------------------------" << endl;
+        cout << "  " << endl;
         Case* temp = head; /*on note où est la fin de la pile*/
         while (temp != NULL) {
             cout << temp->elt << "->";
@@ -124,6 +127,7 @@ struct IntStackVariable {
                 }
                 temp->precedent = nouvelle;
             }
+            capacite++;
         }
         else {
             cout << "Stack Pleine !" << endl;
@@ -195,76 +199,171 @@ struct IntStackVariable {
         return *this;
     }
 
+    IntStackVariable operator^ (const IntStackVariable& stack) const {
+
+        IntStackVariable s;
+
+        s.capacite = capacite + stack.capacite;
+        s.longueur_max = longueur_max + stack.longueur_max;
+        s.head = NULL;
+
+        if (!head) {
+            s = stack;
+            return s;
+        }
+        else if (!stack.head) {
+            s = *this;
+            return s;
+        }
+        else {
+            Case* newhead = new Case;
+            newhead->elt = (stack.head)->elt;
+            
+            Case* temp2 = newhead;
+
+            Case* temp1 = (stack.head)->precedent;
+            while (temp1) {
+                Case* nouvelle = new Case;
+                nouvelle->elt = temp1->elt;
+                temp2->precedent = nouvelle;
+                temp2 = nouvelle;
+                temp1 = temp1->precedent;
+            }
+
+            temp1 = (*this).head;
+            while (temp1) {
+                Case* nouvelle = new Case;
+                nouvelle->elt = temp1->elt;
+                temp2->precedent = nouvelle;
+                temp2 = nouvelle;
+                temp1 = temp1->precedent;
+            }
+            temp2->precedent = NULL;
+
+            s.head = newhead;
+
+            return s;
+        }
+    }
+
+    IntStackVariable operator+ (const IntStackVariable& stack) const {
+
+        IntStackVariable s;
+        Case* temp2;
+        int delta;
+       
+
+        if (capacite < stack.capacite) {
+            s = stack;
+            delta = stack.capacite - capacite;
+            temp2 = head;
+        }
+        else {
+            s = (*this);
+            temp2 = stack.head;
+            delta = capacite - stack.capacite;
+        }
+
+        Case* temp1 = s.head;
+
+        for (int i = 0; i < delta; i++) {
+            temp1 = temp1->precedent;
+        }
+
+        while (temp1) {
+            temp1->elt += temp2->elt;
+            temp2 = temp2->precedent;
+            temp1 = temp1->precedent;
+        }
+        return s;
+    }
+
+    IntStackVariable operator* (const IntStackVariable& stack) const {
+
+        IntStackVariable s;
+        Case* temp2;
+        int delta;
+
+
+        if (capacite < stack.capacite) {
+            s = stack;
+            delta = stack.capacite - capacite;
+            temp2 = head;
+        }
+        else {
+            s = (*this);
+            temp2 = stack.head;
+            delta = capacite - stack.capacite;
+        }
+
+        Case* temp1 = s.head;
+
+        for (int i = 0; i < delta; i++) {
+            temp1->elt = 0;
+            temp1 = temp1->precedent;
+        }
+
+        while (temp1) {
+            temp1->elt *= temp2->elt;
+            temp2 = temp2->precedent;
+            temp1 = temp1->precedent;
+        }
+        return s;
+    }
+
+    IntStackVariable& operator* (const int& i) {
+        Case* temp = head;
+        while (temp) {
+            temp->elt*=i;
+            temp = temp->precedent;
+        }
+        return *this;
+    }
+
+    void operator++ () {
+        Case* temp = head;
+        while (temp) {
+            temp->elt++;
+            temp = temp->precedent;
+        }
+    }
+
+    void operator-- () {
+        Case* temp = head;
+        while (temp) {
+            temp->elt--;
+            temp = temp->precedent;
+        }
+    }
+
+    void operator<< (int i) {
+        (*this).push(i);
+    }
+
+    int operator| (const IntStackVariable& stack) const {
+        if (capacite != stack.capacite) {
+            cout << "Erreur : Piles de Taille Différentes" << endl;
+            exit(-1);
+        }
+
+        cout << "test" << endl;
+        Case* temp1 = head;
+        Case* temp2 = stack.head;
+        int tot = 0;
+
+        while (temp1) {
+            tot += (temp1->elt) * (temp2->elt);
+            temp1 = temp1->precedent;
+            temp2 = temp2->precedent;
+        }
+
+        return tot;
+    }
+
 };
 
 int main() {
-
-    cout << "Mon algorithme :" << endl;
-    int tab[] = { 5, 8, 15, 6, 0 };
-
-    cout << "Tableau avant tri :" << endl;
-
-    for (int i = 0; i < 5; i++) {
-         cout << tab[i] << endl ;
-    } 
-
-    for (int i = 0; i < 5; i++) {
-        int mini = tab[i];
-        int indice = i;
-
-        for (int j = i; j < 5; j++) {
-
-            if (tab[j] < tab[i]) {
-                mini = tab[j];
-                indice = j;
-            }
-
-            tab[indice] = tab[i];
-            tab[i] = mini;
-        }
-    }
-
-    cout << "Tableau après tri :" << endl;
-
-    for (int i = 0; i < 5; i++) {
-        cout << tab[i] << endl;
-    }
-
-    struct Date {
-    private:
-        int day;
-        int month;
-        int year;
     
-    public:
-        void InitDate(int d, int m, int y) {
-            (*this).day = d;
-            (*this).month = m;
-            (*this).year = y;
-        }
-
-        void AfficheDate() {
-            cout << "Date : " << (*this).day << "/" << (*this).month << "/" << (*this).year << endl;
-        }
-
-        void SetDay(int d) {
-            if ((0 <= d) && (d <= 30)) {
-                this->day = d;
-            }
-            else { cout << "Erreur" << endl; }
-        }
-    };
-
-    Date x;
-    x.InitDate(7, 11, 2024);
-    x.AfficheDate();
-
-    x.SetDay(500);
-    x.SetDay(8);
-    x.AfficheDate();
-
-
-
     IntStackVariable s;
 
     for (int i = 0; i < 50; i++) {
@@ -274,13 +373,6 @@ int main() {
     s.pop(5);
     s.revert();
     s.print();
-
-    {
-        IntStackVariable s2 = s;
-        s2.pop(4);
-        s2.push(500505);
-        s2.print();
-    }
 
     s.print();
 
@@ -292,10 +384,30 @@ int main() {
         s3.push(60);
         s3.print();
 
-        s = s3;
+        IntStackVariable s4 = s ^ s3;
+
+        s4.print();
+
+        IntStackVariable s5 = s + s4;
+        s5.print();
+
+        s.print();
+        IntStackVariable s6 = s * 4;
+        s6.print();
     }
 
-    s.print();
+    
+    
+    /*Test du produit scalaire
+    {
+        IntStackVariable a;
+        IntStackVariable b;
+        a << 5;
+        a << 6;
+        b << -1;
+        b << 1;
+        cout << (a | b) << endl;
+    } */
 
     s.del();
 }
