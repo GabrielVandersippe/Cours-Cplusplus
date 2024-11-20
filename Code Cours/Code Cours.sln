@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Code Cours", "Code Cours.vcxproj", "{AF7E77D9-AD2A-48F7-8DA7-B9A95B99AFDF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Systeme_Banquaire", "..\Systeme_Banquaire\Systeme_Banquaire.vcxproj", "{D9ACAFFB-A0BB-4180-95C8-D24587232637}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cave_Generation", "..\Cave_Generation\Cave_Generation.vcxproj", "{26E460D3-A2BC-44C3-9AC6-19B7DB333BFE}"
 EndProject
 Global
@@ -25,14 +23,6 @@ Global
 		{AF7E77D9-AD2A-48F7-8DA7-B9A95B99AFDF}.Release|x64.Build.0 = Release|x64
 		{AF7E77D9-AD2A-48F7-8DA7-B9A95B99AFDF}.Release|x86.ActiveCfg = Release|Win32
 		{AF7E77D9-AD2A-48F7-8DA7-B9A95B99AFDF}.Release|x86.Build.0 = Release|Win32
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Debug|x64.ActiveCfg = Debug|x64
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Debug|x64.Build.0 = Debug|x64
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Debug|x86.ActiveCfg = Debug|Win32
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Debug|x86.Build.0 = Debug|Win32
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Release|x64.ActiveCfg = Release|x64
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Release|x64.Build.0 = Release|x64
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Release|x86.ActiveCfg = Release|Win32
-		{D9ACAFFB-A0BB-4180-95C8-D24587232637}.Release|x86.Build.0 = Release|Win32
 		{26E460D3-A2BC-44C3-9AC6-19B7DB333BFE}.Debug|x64.ActiveCfg = Debug|x64
 		{26E460D3-A2BC-44C3-9AC6-19B7DB333BFE}.Debug|x64.Build.0 = Debug|x64
 		{26E460D3-A2BC-44C3-9AC6-19B7DB333BFE}.Debug|x86.ActiveCfg = Debug|Win32

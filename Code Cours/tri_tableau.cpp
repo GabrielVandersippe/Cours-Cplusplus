@@ -56,10 +56,14 @@ struct IntStackVariable {
     int longueur_max;
     int capacite;
 
-    void Init(int n = NULL) {
+    IntStackVariable (int n = NULL) {
         head = NULL;
         longueur_max = n; /*si longueur_max = NULL, on a une stack infinie*/
         capacite = 0;
+    }
+
+    ~IntStackVariable() {
+        (*this).del();
     }
 
     void push(int i) {
@@ -104,22 +108,27 @@ struct IntStackVariable {
         cout << "Origine" << endl;
     }
 
-    /*void ajout_debut(int i) {
-        Case* nouvelle = new Case();
-        (*nouvelle).elt = i;
-        (*nouvelle).precedent = NULL;
+    void ajout_debut(int i) {
+        if (!longueur_max || (longueur_max > capacite)) {
+            Case* nouvelle = new Case();
+            (*nouvelle).elt = i;
+            (*nouvelle).precedent = NULL;
 
-        if (head == NULL) {
-            head = nouvelle;
+            if (head == NULL) {
+                head = nouvelle;
+            }
+            else {
+                Case* temp = head;
+                while (temp->precedent) {
+                    temp = temp->precedent;
+                }
+                temp->precedent = nouvelle;
+            }
         }
         else {
-            Case* temp = head;
-            while (temp->precedent) {
-                temp = temp->precedent;
-            }
-            temp->precedent = nouvelle;
+            cout << "Stack Pleine !" << endl;
         }
-    } */
+    } 
 
     void revert() {
         Case* temp1 = NULL;
@@ -132,6 +141,60 @@ struct IntStackVariable {
         }
         head = temp1;
     }
+
+    void del() {
+        while (head) {
+            Case* temp = head->precedent;
+            delete head;
+            head = temp;
+        }
+    }
+
+    IntStackVariable(const IntStackVariable& stack) {
+        longueur_max = stack.longueur_max;
+        capacite = stack.capacite;
+        head = NULL;
+        if (stack.head) {
+            Case* temp1 = (stack.head)->precedent;
+            Case* newhead = new Case;
+            newhead->elt = (stack.head)->elt;
+            head = newhead;
+            Case* temp2 = head;
+            while (temp1) {
+                Case* nouvelle = new Case;
+                nouvelle->elt = temp1->elt;
+                temp2->precedent = nouvelle;
+                temp2 = nouvelle;
+                temp1 = temp1->precedent;
+            }
+            temp2->precedent = NULL;
+        }
+    }
+
+    IntStackVariable& operator=(const IntStackVariable& stack) {
+        longueur_max = stack.longueur_max;
+        capacite = stack.capacite;
+        (*this).del();
+        head = NULL;
+        if (stack.head) {   
+            Case* temp1 = (stack.head)->precedent;
+            Case* newhead = new Case;
+            newhead->elt = (stack.head)->elt;
+            head = newhead;
+            Case* temp2 = head;
+            while (temp1) {
+                Case* nouvelle = new Case;
+                nouvelle->elt = temp1->elt;
+                temp2->precedent = nouvelle;
+                temp2 = nouvelle;
+                temp1 = temp1->precedent;
+            }
+            temp2->precedent = NULL;
+        }
+
+        return *this;
+    }
+
 };
 
 int main() {
@@ -204,8 +267,6 @@ int main() {
 
     IntStackVariable s;
 
-    s.Init();
-
     for (int i = 0; i < 50; i++) {
         s.push(i);
     }
@@ -213,4 +274,28 @@ int main() {
     s.pop(5);
     s.revert();
     s.print();
+
+    {
+        IntStackVariable s2 = s;
+        s2.pop(4);
+        s2.push(500505);
+        s2.print();
+    }
+
+    s.print();
+
+    cout << "   " << endl;
+
+    {
+        IntStackVariable s3(20);
+        s3.push(5);
+        s3.push(60);
+        s3.print();
+
+        s = s3;
+    }
+
+    s.print();
+
+    s.del();
 }
