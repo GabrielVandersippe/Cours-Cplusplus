@@ -362,52 +362,152 @@ struct IntStackVariable {
 
 };
 
-int main() {
-    
-    IntStackVariable s;
-
-    for (int i = 0; i < 50; i++) {
-        s.push(i);
+struct Shape {
+protected:
+    int x, y; 
+    Shape() {
+        x = 0;
+        y = 0;
     }
-    s.print();
-    s.pop(5);
-    s.revert();
-    s.print();
+public:
+    void move(int dx, int dy) {
+        x += dx;
+        y += dy;
+    }
+    virtual float area() const {
+        return 0.;
+    }
+};
 
-    s.print();
+struct Circle : public Shape {
+protected:
+    int radius;
+public:
+    Circle(float r) { radius = r; }
 
-    cout << "   " << endl;
+    float area() const {
+        cout << "pi * r^2 = ";
+        return 3.14 * radius * radius;
+    }
+};
+
+struct Rectangle : public Shape {
+private :
+    float lon, lar;
+public : 
+    Rectangle(float l, float L) {
+        lar = l;
+        lon = L;
+    }
+
+    float area() const {
+        cout << "Longueur * Largeur = ";
+        return lon * lar;
+    }
+};
+
+float foo(Shape* s) {
+    return s -> area();
+}
+
+struct Case_Shape {
+    Shape* elt = NULL;
+    Case_Shape* precedent = NULL;
+};
+
+struct ShapeList {
+
+    int longueur;
+    Case_Shape* head;
+
+    ShapeList() {
+        longueur = 0;
+        head = NULL;
+    }
+
+    ~ShapeList() {
+        while (head) {
+            Case_Shape* temp = head->precedent;
+            delete head;
+            head = temp;
+        }
+    }
+
+    void append(Shape* s) {
+        Case_Shape* nouvelle = new Case_Shape();
+        nouvelle->elt = s;
+        nouvelle->precedent = head;
+        head = nouvelle;
+    }
+
+    void all_areas() {
+        Case_Shape* temp = head;
+        while (temp) {
+            cout << foo(temp->elt) << endl;
+            temp = temp->precedent;
+        }
+    }
+
+};
+
+int main() {
 
     {
-        IntStackVariable s3(20);
-        s3.push(5);
-        s3.push(60);
-        s3.print();
+        IntStackVariable s;
 
-        IntStackVariable s4 = s ^ s3;
-
-        s4.print();
-
-        IntStackVariable s5 = s + s4;
-        s5.print();
+        for (int i = 0; i < 20; i++) {
+            s.push(i);
+        }
+        s.print();
+        s.pop(5);
+        s.revert();
+        s.print();
 
         s.print();
-        IntStackVariable s6 = s * 4;
-        s6.print();
+
+        cout << "   " << endl;
+
+        {
+            IntStackVariable s3(20);
+            s3.push(5);
+            s3.push(60);
+            s3.print();
+
+            IntStackVariable s4 = s ^ s3;
+
+            s4.print();
+
+            IntStackVariable s5 = s + s4;
+            s5.print();
+
+            s.print();
+            IntStackVariable s6 = s * 4;
+            s6.print();
+        }
+
+
+
+        /*Test du produit scalaire
+        {
+            IntStackVariable a;
+            IntStackVariable b;
+            a << 5;
+            a << 6;
+            b << -1;
+            b << 1;
+            cout << (a | b) << endl;
+        } */
+
+        s.del();
+
     }
 
-    
-    
-    /*Test du produit scalaire
-    {
-        IntStackVariable a;
-        IntStackVariable b;
-        a << 5;
-        a << 6;
-        b << -1;
-        b << 1;
-        cout << (a | b) << endl;
-    } */
+    ShapeList S;
 
-    s.del();
+    for (float i = 0.; i < 10; i++) {
+        S.append(new Circle(i));
+        S.append(new Rectangle(2 * i, i + 1));
+    }
+
+    S.all_areas();
 }

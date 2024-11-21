@@ -1,2 +1,4 @@
 ﻿  tri_tableau.cpp
+C:\Users\VANDERSIPPE\cours-info\cours-c++\Cours-Cplusplus\Code Cours\tri_tableau.cpp(386,32): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\VANDERSIPPE\cours-info\cours-c++\Cours-Cplusplus\Code Cours\tri_tableau.cpp(390,30): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
   Code Cours.vcxproj -> C:\Users\VANDERSIPPE\cours-info\cours-c++\Cours-Cplusplus\Code Cours\x64\Debug\Code Cours.exe
